@@ -8,10 +8,10 @@ Window::Window() {
 }
 
 void Window::start() {
-    for (int i = 0; i < 2000; ++i) {
+    for (int i = 0; i < 20; ++i) {
         update();
         draw();
-        Sleep(500);
+        Sleep(200);
     }
 }
 

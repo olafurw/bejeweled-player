@@ -19,7 +19,6 @@ class Solver {
 
   private:
     char m_board[8][8];
-    std::vector<Solution> m_solutions;
 
     bool match(const int i, const int j, const Pattern & pattern);
     bool point_inside(const cv::Point2i & point);

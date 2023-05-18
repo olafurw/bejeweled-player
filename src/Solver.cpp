@@ -38,6 +38,8 @@ Solver::Solver(cv::Mat & screen) {
 }
 
 bool Solver::solve(const Patterns & patterns) {
+    std::vector<Solution> solutions;
+
     for (int i = 0; i < 8; ++i) {
         for (int j = 0; j < 8; ++j) {
             const char gem = m_board[i][j];
@@ -46,7 +48,7 @@ bool Solver::solve(const Patterns & patterns) {
                 if (match(i, j, pattern)) {
                     const cv::Point2i & C_point = pattern.points.back();
 
-                    m_solutions.emplace_back(Solution{
+                    solutions.emplace_back(Solution{
                         cv::Point2i(C_point.x + j, C_point.y + i),
                         pattern.solution_dir,
                         pattern.value
@@ -56,13 +58,13 @@ bool Solver::solve(const Patterns & patterns) {
         }
     }
 
-    if (m_solutions.empty()) {
+    if (solutions.empty()) {
         return false;
     }
 
     std::sort(
-      m_solutions.begin(),
-      m_solutions.end(),
+      solutions.begin(),
+      solutions.end(),
       [](const Solution & a, const Solution & b) {
           if (a.value == b.value) {
               return a.C_point.y < b.C_point.y;
@@ -71,8 +73,7 @@ bool Solver::solve(const Patterns & patterns) {
           return a.value > b.value;
       });
 
-    m_solution = m_solutions.at(0);
-
+    m_solution = solutions.at(0);
     return true;
 }
 

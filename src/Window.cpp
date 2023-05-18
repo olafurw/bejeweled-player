@@ -11,6 +11,7 @@ void Window::start() {
     for (int i = 0; i < 2000; ++i) {
         update();
         draw();
+        Sleep(500);
     }
 }
 
@@ -18,14 +19,14 @@ void Window::update() {
     window_to_mat();
 
     Solver s(m_mat);
-    if (s.solve(m_patterns)) {
-        const Solution & solution = s.m_solution;
-
-        const int x = WINDOW_RIGHT_PADDING + (solution.C_point.x * GAME_TILE_SIZE) + GAME_TILE_PADDING;
-        const int y = WINDOW_TOP_PADDING + (solution.C_point.y * GAME_TILE_SIZE) + GAME_TILE_PADDING;
-
-        mouse_click_drag(x, y, solution.direction.x * GAME_TILE_SIZE, solution.direction.y * GAME_TILE_SIZE);
+    if (!s.solve(m_patterns)) {
+        return;
     }
+
+    const Solution & solution = s.m_solution;
+    const int x = WINDOW_RIGHT_PADDING + (solution.C_point.x * GAME_TILE_SIZE) + GAME_TILE_PADDING;
+    const int y = WINDOW_TOP_PADDING + (solution.C_point.y * GAME_TILE_SIZE) + GAME_TILE_PADDING;
+    mouse_click_drag(x, y, solution.direction.x * GAME_TILE_SIZE, solution.direction.y * GAME_TILE_SIZE);
 }
 
 void Window::draw() {
@@ -79,8 +80,8 @@ void Window::get_mouse_position(const int x, const int y, int & outX, int & outY
     POINT cursor;
     GetCursorPos(&cursor);
 
-    const float screenX = static_cast<float>(65535.0f / GetSystemMetrics(SM_CXSCREEN));
-    const float screenY = static_cast<float>(65535.0f / GetSystemMetrics(SM_CYSCREEN));
+    const float screenX = 65535.0f / GetSystemMetrics(SM_CXSCREEN);
+    const float screenY = 65535.0f / GetSystemMetrics(SM_CYSCREEN);
 
     outX = static_cast<int>((rect.left + x) * screenX);
     outY = static_cast<int>((rect.top + y) * screenY);
@@ -96,20 +97,14 @@ void Window::mouse_click_drag(const int start_x, const int start_y, const int di
 
     INPUT move = { 0 };
     move.type = INPUT_MOUSE;
-
     move.mi.dx = screen_start_x;
     move.mi.dy = screen_start_y;
-
     move.mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE;
-
     SendInput(1, &move, sizeof(INPUT));
 
     INPUT click = { 0 };
     click.type = INPUT_MOUSE;
-
-    // set move cursor directly and left click
     click.mi.dwFlags = MOUSEEVENTF_LEFTDOWN;
-
     SendInput(1, &click, sizeof(INPUT));
 
     int screen_end_x = 0;
@@ -118,20 +113,13 @@ void Window::mouse_click_drag(const int start_x, const int start_y, const int di
 
     INPUT swipe = { 0 };
     swipe.type = INPUT_MOUSE;
-
     swipe.mi.dx = screen_end_x;
     swipe.mi.dy = screen_end_y;
-
-    // set move cursor directly and left click
     swipe.mi.dwFlags = MOUSEEVENTF_MOVE | MOUSEEVENTF_ABSOLUTE;
-
     SendInput(1, &swipe, sizeof(INPUT));
 
     INPUT release = { 0 };
     release.type = INPUT_MOUSE;
-
-    // set move cursor directly and left click
     release.mi.dwFlags = MOUSEEVENTF_LEFTUP;
-
     SendInput(1, &release, sizeof(INPUT));
 }

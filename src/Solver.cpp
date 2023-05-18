@@ -44,14 +44,13 @@ bool Solver::solve(const Patterns & patterns) {
 
             for (const Pattern & pattern : patterns.m_patterns) {
                 if (match(i, j, pattern)) {
-                    const cv::Point2i & C_point = pattern.points.at(pattern.points.size() - 1);
+                    const cv::Point2i & C_point = pattern.points.back();
 
-                    Solution solution;
-                    solution.C_point = cv::Point2i(C_point.x + j, C_point.y + i);
-                    solution.direction = pattern.solution_dir;
-                    solution.value = pattern.value;
-
-                    m_solutions.emplace_back(solution);
+                    m_solutions.emplace_back(Solution{
+                        cv::Point2i(C_point.x + j, C_point.y + i),
+                        pattern.solution_dir,
+                        pattern.value
+                    });
                 }
             }
         }
@@ -61,13 +60,16 @@ bool Solver::solve(const Patterns & patterns) {
         return false;
     }
 
-    std::sort(m_solutions.begin(), m_solutions.end(), [](const Solution & a, const Solution & b) {
-        if (a.value == b.value) {
-            return a.C_point.y < b.C_point.y;
-        }
+    std::sort(
+      m_solutions.begin(),
+      m_solutions.end(),
+      [](const Solution & a, const Solution & b) {
+          if (a.value == b.value) {
+              return a.C_point.y < b.C_point.y;
+          }
 
-        return a.value > b.value;
-    });
+          return a.value > b.value;
+      });
 
     m_solution = m_solutions.at(0);
 
@@ -75,12 +77,8 @@ bool Solver::solve(const Patterns & patterns) {
 }
 
 bool Solver::point_inside(const cv::Point2i & point) {
-    if (point.x < 0 || point.x > 7 ||
-        point.y < 0 || point.y > 7) {
-        return false;
-    }
-
-    return true;
+    return (point.x >= 0 && point.x <= 7 &&
+            point.y >= 0 && point.y <= 7);
 }
 
 bool Solver::match(const int i, const int j, const Pattern & pattern) {

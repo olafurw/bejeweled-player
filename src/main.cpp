@@ -1,12 +1,6 @@
 #include "Window.hpp"
 
-#include <Windows.h>
-#include <iostream>
-#include <string>
-
-using namespace std;
-
-int main(int argc, char** argv)
+int main()
 {
     Window w;
     w.start();

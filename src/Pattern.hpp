@@ -1,9 +1,6 @@
-#ifndef BEJEWELED_PATTERN
-#define BEJEWELED_PATTERN
+#pragma once
 
 #include "opencv2/core/core.hpp"
-
-using namespace cv;
 
 enum PatternType
 {
@@ -22,11 +19,11 @@ enum PatternType
 
 struct Pattern
 {
-    std::vector<Point2i> points;
+    std::vector<cv::Point2i> points;
     PatternType type;
     int id;
     int value;
-    Point2i solution_dir;
+    cv::Point2i solution_dir;
 };
 
 class Patterns
@@ -36,5 +33,3 @@ public:
 
     std::vector<Pattern> m_patterns;
 };
-
-#endif

@@ -1,15 +1,13 @@
-#ifndef BEJEWELED_WINDOW
-#define BEJEWELED_WINDOW
+#pragma once
+
+#define NOMINMAX
+#include <Windows.h>
 
 #include "opencv2/core/core.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
 #include "opencv2/highgui/highgui.hpp"
 
-#include <Windows.h>
-
 #include "Pattern.hpp"
-
-using namespace cv;
 
 class Window
 {
@@ -29,7 +27,7 @@ public:
 
 private:
     HWND m_window;
-    Mat m_mat;
+    cv::Mat m_mat;
     Patterns m_patterns;
 
     int m_width;
@@ -45,4 +43,3 @@ private:
     void mouse_click_drag(const int start_x, const int start_y, const int distance_x, const int distance_y);
 };
 
-#endif

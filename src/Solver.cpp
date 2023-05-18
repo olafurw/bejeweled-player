@@ -2,7 +2,7 @@
 
 #include "Window.hpp"
 
-Solver::Solver(Mat& screen)
+Solver::Solver(cv::Mat& screen)
 {
     const int startX = Window::GAME_RIGHT_PADDING;
     int y = Window::GAME_TOP_PADDING;
@@ -13,37 +13,37 @@ Solver::Solver(Mat& screen)
 
         for(int j = 0; j < 8; ++j)
         {
-            const Vec4b color = screen.at<Vec4b>(y + Window::GAME_TILE_PADDING, x + Window::GAME_TILE_PADDING);
+            const cv::Vec4b color = screen.at<cv::Vec4b>(y + Window::GAME_TILE_PADDING, x + Window::GAME_TILE_PADDING);
 
             m_board[i][j] = detect_gem(color);
 
             if(m_board[i][j] == 'R')
             {
-                rectangle(screen, Point(x, y), Point(x + Window::GAME_TILE_SIZE, y + Window::GAME_TILE_SIZE), Scalar(0.0f, 0.0f, 255.0f), -1);
+                rectangle(screen, cv::Point(x, y), cv::Point(x + Window::GAME_TILE_SIZE, y + Window::GAME_TILE_SIZE), cv::Scalar(0.0f, 0.0f, 255.0f), -1);
             }
             else if(m_board[i][j] == 'G')
             {
-                rectangle(screen, Point(x, y), Point(x + Window::GAME_TILE_SIZE, y + Window::GAME_TILE_SIZE), Scalar(0.0f, 255.0f, 0.0f), -1);
+                rectangle(screen, cv::Point(x, y), cv::Point(x + Window::GAME_TILE_SIZE, y + Window::GAME_TILE_SIZE), cv::Scalar(0.0f, 255.0f, 0.0f), -1);
             }
             else if(m_board[i][j] == 'B')
             {
-                rectangle(screen, Point(x, y), Point(x + Window::GAME_TILE_SIZE, y + Window::GAME_TILE_SIZE), Scalar(255.0f, 0.0f, 0.0f), -1);
+                rectangle(screen, cv::Point(x, y), cv::Point(x + Window::GAME_TILE_SIZE, y + Window::GAME_TILE_SIZE), cv::Scalar(255.0f, 0.0f, 0.0f), -1);
             }
             else if(m_board[i][j] == 'O')
             {
-                rectangle(screen, Point(x, y), Point(x + Window::GAME_TILE_SIZE, y + Window::GAME_TILE_SIZE), Scalar(0.0f, 100.0f, 255.0f), -1);
+                rectangle(screen, cv::Point(x, y), cv::Point(x + Window::GAME_TILE_SIZE, y + Window::GAME_TILE_SIZE), cv::Scalar(0.0f, 100.0f, 255.0f), -1);
             }
             else if(m_board[i][j] == 'Y')
-            {
-                rectangle(screen, Point(x, y), Point(x + Window::GAME_TILE_SIZE, y + Window::GAME_TILE_SIZE), Scalar(0.0f, 255.0f, 255.0f), -1);
+            {cv::
+                rectangle(screen, cv::Point(x, y), cv::Point(x + Window::GAME_TILE_SIZE, y + Window::GAME_TILE_SIZE), cv::Scalar(0.0f, 255.0f, 255.0f), -1);
             }
             else if(m_board[i][j] == 'P')
             {
-                rectangle(screen, Point(x, y), Point(x + Window::GAME_TILE_SIZE, y + Window::GAME_TILE_SIZE), Scalar(255.0f, 0.0f, 255.0f), -1);
+                rectangle(screen, cv::Point(x, y), cv::Point(x + Window::GAME_TILE_SIZE, y + Window::GAME_TILE_SIZE), cv::Scalar(255.0f, 0.0f, 255.0f), -1);
             }
             else if(m_board[i][j] == 'W')
             {
-                rectangle(screen, Point(x, y), Point(x + Window::GAME_TILE_SIZE, y + Window::GAME_TILE_SIZE), Scalar(255.0f, 255.0f, 255.0f), -1);
+                rectangle(screen, cv::Point(x, y), cv::Point(x + Window::GAME_TILE_SIZE, y + Window::GAME_TILE_SIZE), cv::Scalar(255.0f, 255.0f, 255.0f), -1);
             }
 
             x += Window::GAME_TILE_SIZE;
@@ -65,10 +65,10 @@ bool Solver::solve(const Patterns& patterns)
             {
                 if(match(i, j, pattern))
                 {
-                    const Point2i& C_point = pattern.points.at(pattern.points.size() - 1);
+                    const cv::Point2i& C_point = pattern.points.at(pattern.points.size() - 1);
 
                     Solution solution;
-                    solution.C_point = Point2i(C_point.x + j, C_point.y + i);
+                    solution.C_point = cv::Point2i(C_point.x + j, C_point.y + i);
                     solution.direction = pattern.solution_dir;
                     solution.value = pattern.value;
                     
@@ -100,7 +100,7 @@ bool Solver::solve(const Patterns& patterns)
     return true;
 }
 
-bool Solver::point_inside(const Point2i& point)
+bool Solver::point_inside(const cv::Point2i& point)
 {
     if(point.x < 0 || point.x > 7 ||
        point.y < 0 || point.y > 7)
@@ -118,12 +118,12 @@ bool Solver::match(const int i, const int j, const Pattern& pattern)
         return false;
     }
 
-    const Point2i A_point(pattern.points[0].x + j, pattern.points[0].y + i);
+    const cv::Point2i A_point(pattern.points[0].x + j, pattern.points[0].y + i);
     const char A_gem = m_board[A_point.y][A_point.x];
 
     for(auto& point : pattern.points)
     {
-        const Point2i real_point(point.x + j, point.y + i);
+        const cv::Point2i real_point(point.x + j, point.y + i);
         if(!point_inside(real_point))
         {
             return false;
@@ -139,7 +139,7 @@ bool Solver::match(const int i, const int j, const Pattern& pattern)
     return true;
 }
 
-char Solver::detect_gem(const Vec4b& inColor)
+char Solver::detect_gem(const cv::Vec4b& inColor)
 {
     const double& blue = inColor[0];
     const double& green = inColor[1];

@@ -2,8 +2,7 @@
 
 #include "opencv2/core/core.hpp"
 
-enum PatternType
-{
+enum PatternType {
     VerticalThreeI,
     HorizontalThreeI,
     VerticalThreeJ,
@@ -17,8 +16,7 @@ enum PatternType
     CornerFive,
 };
 
-struct Pattern
-{
+struct Pattern {
     std::vector<cv::Point2i> points;
     PatternType type;
     int id;
@@ -26,9 +24,8 @@ struct Pattern
     cv::Point2i solution_dir;
 };
 
-class Patterns
-{
-public:
+class Patterns {
+  public:
     Patterns();
 
     std::vector<Pattern> m_patterns;

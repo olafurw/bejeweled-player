@@ -1,7 +1,6 @@
 #include "Window.hpp"
 
-int main()
-{
+int main() {
     Window w;
     w.start();
 

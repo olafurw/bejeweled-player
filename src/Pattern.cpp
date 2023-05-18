@@ -1,7 +1,6 @@
 #include "Pattern.hpp"
 
-Patterns::Patterns()
-{
+Patterns::Patterns() {
     // CxBA
     Pattern vertical_i_left;
     vertical_i_left.points.emplace_back(cv::Point2i(0, 0));
@@ -249,9 +248,9 @@ Patterns::Patterns()
     //  C
     // AxBD
     Pattern horizontal_v_four_top_left;
-    horizontal_v_four_top_left.points.emplace_back(cv::Point2i(0, 0)); // A
-    horizontal_v_four_top_left.points.emplace_back(cv::Point2i(2, 0)); // B
-    horizontal_v_four_top_left.points.emplace_back(cv::Point2i(3, 0)); // D
+    horizontal_v_four_top_left.points.emplace_back(cv::Point2i(0, 0));  // A
+    horizontal_v_four_top_left.points.emplace_back(cv::Point2i(2, 0));  // B
+    horizontal_v_four_top_left.points.emplace_back(cv::Point2i(3, 0));  // D
     horizontal_v_four_top_left.points.emplace_back(cv::Point2i(1, -1)); // C
     horizontal_v_four_top_left.type = HorizontalFour;
     horizontal_v_four_top_left.solution_dir = cv::Point2i(0, 1);
@@ -263,9 +262,9 @@ Patterns::Patterns()
     //   C
     // ABxD
     Pattern horizontal_v_four_top_right;
-    horizontal_v_four_top_right.points.emplace_back(cv::Point2i(0, 0)); // A
-    horizontal_v_four_top_right.points.emplace_back(cv::Point2i(1, 0)); // B
-    horizontal_v_four_top_right.points.emplace_back(cv::Point2i(3, 0)); // D
+    horizontal_v_four_top_right.points.emplace_back(cv::Point2i(0, 0));  // A
+    horizontal_v_four_top_right.points.emplace_back(cv::Point2i(1, 0));  // B
+    horizontal_v_four_top_right.points.emplace_back(cv::Point2i(3, 0));  // D
     horizontal_v_four_top_right.points.emplace_back(cv::Point2i(2, -1)); // C
     horizontal_v_four_top_right.type = HorizontalFour;
     horizontal_v_four_top_right.solution_dir = cv::Point2i(0, 1);

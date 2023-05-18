@@ -9,37 +9,34 @@
 
 #include "Pattern.hpp"
 
-class Window
-{
-public:
-    Window();
+const int GAME_RIGHT_PADDING = 261;
+const int WINDOW_RIGHT_PADDING = 269;
 
+const int GAME_TOP_PADDING = 37;
+const int WINDOW_TOP_PADDING = 67;
+
+const int GAME_TILE_SIZE = 64;
+const int GAME_TILE_PADDING = 31;
+
+class Window {
+  public:
+    Window();
     void start();
 
-    static const int GAME_RIGHT_PADDING;
-    static const int WINDOW_RIGHT_PADDING;
-
-    static const int GAME_TOP_PADDING;
-    static const int WINDOW_TOP_PADDING;
-
-    static const int GAME_TILE_SIZE;
-    static const int GAME_TILE_PADDING;
-
-private:
+  private:
     HWND m_window;
     cv::Mat m_mat;
     Patterns m_patterns;
 
     int m_width;
     int m_height;
-    
+
     bool m_stop;
 
     void update();
     void draw();
 
     void window_to_mat();
-    void get_mouse_position(const int x, const int y, int& outX, int& outY);
+    void get_mouse_position(const int x, const int y, int & outX, int & outY);
     void mouse_click_drag(const int start_x, const int start_y, const int distance_x, const int distance_y);
 };
-

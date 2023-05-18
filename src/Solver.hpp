@@ -4,26 +4,25 @@
 
 #include "Pattern.hpp"
 
-struct Solution
-{
-	cv::Point2i C_point;
-	cv::Point2i direction;
-	int value;
+struct Solution {
+    cv::Point2i C_point;
+    cv::Point2i direction;
+    int value;
 };
 
-class Solver
-{
-public:
-	Solver(cv::Mat& screen);
+class Solver {
+  public:
+    Solver(cv::Mat & screen);
 
-	bool solve(const Patterns& patterns);
-	Solution m_solution;
-private:
-	char m_board[8][8];
-	std::vector<Solution> m_solutions;
+    bool solve(const Patterns & patterns);
+    Solution m_solution;
 
-	bool match(const int i, const int j, const Pattern& pattern);
-	bool point_inside(const cv::Point2i& point);
+  private:
+    char m_board[8][8];
+    std::vector<Solution> m_solutions;
 
-	char detect_gem(const cv::Vec4b& inColor);
+    bool match(const int i, const int j, const Pattern & pattern);
+    bool point_inside(const cv::Point2i & point);
+
+    char detect_gem(const cv::Vec4b & inColor);
 };

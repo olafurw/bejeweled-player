@@ -111,37 +111,51 @@ char Solver::detect_gem(const cv::Vec4b & inColor) {
     const double & red = inColor[2];
 
     // White
-    if (blue > 233.0f && red > 235.0f && green > 233.0f) {
+    if (blue > 233.0f 
+        && red > 235.0f 
+        && green > 233.0f) {
         return 'W';
     }
 
     // Red x
-    if (blue > 55.0f && blue < 58.0f && green > 23.0f && green < 28.0f && red > 247.0f) {
+    if (blue > 55.0f && blue < 58.0f 
+        && green > 23.0f && green < 28.0f 
+        && red > 247.0f) {
         return 'R';
     }
 
     // Green x
-    if (blue > 127.0f && blue < 135.0f && green > 245.0f && red > 79.0f && red < 92.0f) {
+    if (blue > 127.0f && blue < 135.0f 
+        && green > 245.0f 
+        && red > 79.0f && red < 92.0f) {
         return 'G';
     }
 
     // Blue x
-    if (blue > 247.0f && green > 127.0f && green < 135.0f && red > 15.0f && red < 20.0f) {
+    if (blue > 247.0f 
+        && green > 127.0f && green < 135.0f 
+        && red > 15.0f && red < 20.0f) {
         return 'B';
     }
 
     // Purple x
-    if (blue > 239.0f && blue < 245.0f && green > 15.0f && green < 19.0f && red > 239.0f && red < 245.0f) {
+    if (blue > 239.0f && blue < 245.0f 
+        && green > 15.0f && green < 19.0f 
+        && red > 239.0f && red < 245.0f) {
         return 'P';
     }
 
     // Yellow
-    if (blue > 31.0f && blue < 37.0f && green > 247.0f && green < 250.0f && red > 247.0f && red < 255.0f) {
+    if (blue > 31.0f && blue < 37.0f
+        && green > 247.0f && green < 250.0f 
+        && red > 247.0f && red < 255.0f) {
         return 'Y';
     }
 
     // Orange x
-    if (blue > 119.0f && blue < 130.0f && green > 243.0f && green < 248.0f && red > 247.0f) {
+    if (blue > 119.0f && blue < 130.0f 
+        && green > 243.0f && green < 248.0f 
+        && red > 247.0f) {
         return 'O';
     }
 

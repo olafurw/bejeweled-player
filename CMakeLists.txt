@@ -7,6 +7,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(OpenCV CONFIG REQUIRED)
 
 set(GAME_FILES 
+    src/Mouse.hpp
+    src/Mouse.cpp
     src/Pattern.hpp
     src/Pattern.cpp
     src/Solver.hpp

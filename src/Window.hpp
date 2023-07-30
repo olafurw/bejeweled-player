@@ -37,6 +37,4 @@ class Window {
     void draw();
 
     void window_to_mat();
-    void get_mouse_position(const int x, const int y, int & outX, int & outY);
-    void mouse_click_drag(const int start_x, const int start_y, const int distance_x, const int distance_y);
 };

@@ -1,13 +1,20 @@
 #include "Window.hpp"
 
+#include "Mouse.hpp"
 #include "Solver.hpp"
 
 Window::Window() {
     m_window = FindWindow(NULL, "Bejeweled 3");
     m_stop = false;
+    m_width = 0;
+    m_height = 0;
 }
 
 void Window::start() {
+    if (!m_window) {
+        return;
+    }
+
     for (int i = 0; i < 20; ++i) {
         update();
         draw();
@@ -26,7 +33,7 @@ void Window::update() {
     const Solution & solution = s.m_solution;
     const int x = WINDOW_RIGHT_PADDING + (solution.C_point.x * GAME_TILE_SIZE) + GAME_TILE_PADDING;
     const int y = WINDOW_TOP_PADDING + (solution.C_point.y * GAME_TILE_SIZE) + GAME_TILE_PADDING;
-    mouse_click_drag(x, y, solution.direction.x * GAME_TILE_SIZE, solution.direction.y * GAME_TILE_SIZE);
+    mouse_click_drag(m_window, x, y, solution.direction.x * GAME_TILE_SIZE, solution.direction.y * GAME_TILE_SIZE);
 }
 
 void Window::draw() {
@@ -71,55 +78,4 @@ void Window::window_to_mat() {
 
     DeleteObject(hbwindow);
     DeleteDC(hwindowCompatibleDC);
-}
-
-void Window::get_mouse_position(const int x, const int y, int & outX, int & outY) {
-    RECT rect;
-    GetWindowRect(m_window, &rect);
-
-    POINT cursor;
-    GetCursorPos(&cursor);
-
-    const float screenX = 65535.0f / GetSystemMetrics(SM_CXSCREEN);
-    const float screenY = 65535.0f / GetSystemMetrics(SM_CYSCREEN);
-
-    outX = static_cast<int>((rect.left + x) * screenX);
-    outY = static_cast<int>((rect.top + y) * screenY);
-}
-
-// Heavily modified function from
-// http://stackoverflow.com/questions/11276233/how-to-move-mouse-with-c
-// author: http://stackoverflow.com/users/783014/jerkan
-void Window::mouse_click_drag(const int start_x, const int start_y, const int distance_x, const int distance_y) {
-    int screen_start_x = 0;
-    int screen_start_y = 0;
-    get_mouse_position(start_x, start_y, screen_start_x, screen_start_y);
-
-    INPUT move = { 0 };
-    move.type = INPUT_MOUSE;
-    move.mi.dx = screen_start_x;
-    move.mi.dy = screen_start_y;
-    move.mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE;
-    SendInput(1, &move, sizeof(INPUT));
-
-    INPUT click = { 0 };
-    click.type = INPUT_MOUSE;
-    click.mi.dwFlags = MOUSEEVENTF_LEFTDOWN;
-    SendInput(1, &click, sizeof(INPUT));
-
-    int screen_end_x = 0;
-    int screen_end_y = 0;
-    get_mouse_position(start_x + distance_x, start_y + distance_y, screen_end_x, screen_end_y);
-
-    INPUT swipe = { 0 };
-    swipe.type = INPUT_MOUSE;
-    swipe.mi.dx = screen_end_x;
-    swipe.mi.dy = screen_end_y;
-    swipe.mi.dwFlags = MOUSEEVENTF_MOVE | MOUSEEVENTF_ABSOLUTE;
-    SendInput(1, &swipe, sizeof(INPUT));
-
-    INPUT release = { 0 };
-    release.type = INPUT_MOUSE;
-    release.mi.dwFlags = MOUSEEVENTF_LEFTUP;
-    SendInput(1, &release, sizeof(INPUT));
 }

@@ -9,14 +9,14 @@
 
 #include "Pattern.hpp"
 
-const int GAME_RIGHT_PADDING = 261;
-const int WINDOW_RIGHT_PADDING = 269;
+constexpr int GAME_RIGHT_PADDING = 261;
+constexpr int WINDOW_RIGHT_PADDING = 269;
 
-const int GAME_TOP_PADDING = 37;
-const int WINDOW_TOP_PADDING = 67;
+constexpr int GAME_TOP_PADDING = 37;
+constexpr int WINDOW_TOP_PADDING = 67;
 
-const int GAME_TILE_SIZE = 64;
-const int GAME_TILE_PADDING = 31;
+constexpr int GAME_TILE_SIZE = 64;
+constexpr int GAME_TILE_PADDING = 31;
 
 class Window {
   public:

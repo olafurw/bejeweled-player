@@ -1,6 +1,6 @@
 #pragma once
 
-#include "opencv2/core/core.hpp"
+#include <vector>
 
 enum PatternType {
     VerticalThreeI,
@@ -17,11 +17,11 @@ enum PatternType {
 };
 
 struct Pattern {
-    std::vector<cv::Point2i> points;
+    std::vector<std::pair<int, int>> points;
     PatternType type;
     int id;
     int value;
-    cv::Point2i solution_dir;
+    std::pair<int, int> solution_dir;
 };
 
 class Patterns {

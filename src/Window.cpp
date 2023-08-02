@@ -15,6 +15,10 @@ void Window::start() {
         return;
     }
 
+    if (SetForegroundWindow(m_window) == 0) {
+        return;
+    }
+    
     for (int i = 0; i < 20; ++i) {
         update();
         draw();
@@ -25,19 +29,19 @@ void Window::start() {
 void Window::update() {
     window_to_mat();
 
-    Solver s(m_mat);
-    if (!s.solve(m_patterns)) {
+    const auto solutionOpt = solve(m_patterns, m_mat);
+    if (!solutionOpt) {
         return;
     }
 
-    const Solution & solution = s.m_solution;
-    const int x = WINDOW_RIGHT_PADDING + (solution.C_point.x * GAME_TILE_SIZE) + GAME_TILE_PADDING;
-    const int y = WINDOW_TOP_PADDING + (solution.C_point.y * GAME_TILE_SIZE) + GAME_TILE_PADDING;
-    mouse_click_drag(m_window, x, y, solution.direction.x * GAME_TILE_SIZE, solution.direction.y * GAME_TILE_SIZE);
+    const Solution & solution = solutionOpt.value();
+    const int x = WINDOW_RIGHT_PADDING + (solution.C_point.first * GAME_TILE_SIZE) + GAME_TILE_PADDING;
+    const int y = WINDOW_TOP_PADDING + (solution.C_point.second * GAME_TILE_SIZE) + GAME_TILE_PADDING;
+    mouse_click_drag(m_window, x, y, solution.direction.first * GAME_TILE_SIZE, solution.direction.second * GAME_TILE_SIZE);
 }
 
 void Window::draw() {
-    imshow("GAME", m_mat);
+    //imshow("GAME", m_mat);
 }
 
 // http://stackoverflow.com/questions/14148758/how-to-capture-the-desktop-in-opencv-ie-turn-a-bitmap-into-a-mat

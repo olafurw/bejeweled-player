@@ -18,6 +18,8 @@ constexpr int GAME_TOP_PADDING = 37;
 constexpr int WINDOW_TOP_PADDING = 67;
 
 constexpr int GAME_TILE_SIZE = 64;
+constexpr int CENTER_GAME_TILE_SIZE = 32;
+constexpr int CENTER_GAME_TILE_OFFSET = 16;
 constexpr int GAME_TILE_PADDING = 31;
 
 class Window {

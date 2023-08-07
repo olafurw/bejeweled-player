@@ -53,19 +53,12 @@ void Window::start() {
     }
 
     cv::namedWindow("game", cv::WINDOW_NORMAL);
-    cv::createTrackbar("Threshold", "game", &m_threshold, 100, onTrackbarChange, this);
-
-    m_purple = cv::imread("../purple.png", cv::IMREAD_UNCHANGED);
-    m_yellow = cv::imread("../yellow.png", cv::IMREAD_UNCHANGED);
-    m_yellow_fire = cv::imread("../yellow_fire.png", cv::IMREAD_UNCHANGED);
-    m_red = cv::imread("../red.png", cv::IMREAD_UNCHANGED);
-    m_red_fire = cv::imread("../red_fire.png", cv::IMREAD_UNCHANGED);
-    m_red_shiny = cv::imread("../red_shiny.png", cv::IMREAD_UNCHANGED);
-
+    
     if (SetForegroundWindow(m_window) == 0) {
         return;
     }
     
+    //for (int i = 0; i < 100; ++i) {
     while (true) {
         update();
         draw();
@@ -88,67 +81,6 @@ void Window::update() {
 }
 
 void Window::draw() {
-    std::vector<cv::Point> matchLocations;
-    {
-        cv::Mat correlationMap;
-        int matchMethod = CV_TM_CCOEFF_NORMED; // You can choose a different matching method if needed
-        cv::matchTemplate(m_mat, m_red, correlationMap, matchMethod);
-
-        double threshold = static_cast<double>(m_threshold / 100.0);
-        cv::Mat thresholdMap;
-        cv::threshold(correlationMap, thresholdMap, threshold, 1.0, cv::THRESH_TOZERO);
-
-        std::vector<cv::Point> tmpLocations;
-        cv::findNonZero(thresholdMap, tmpLocations);
-
-        matchLocations = filterPoints(tmpLocations, 30);
-
-        for (const auto & loc : matchLocations) {
-            cv::Rect boundingBox(loc.x, loc.y, m_red.cols, m_red.rows);
-            cv::rectangle(m_mat, boundingBox, cv::Scalar(0, 255, 0), 2);
-        }
-    }
-    {
-        cv::Mat correlationMap;
-        int matchMethod = CV_TM_CCOEFF_NORMED; // You can choose a different matching method if needed
-        cv::matchTemplate(m_mat, m_red_fire, correlationMap, matchMethod);
-
-        double threshold = static_cast<double>(m_threshold / 100.0);
-        cv::Mat thresholdMap;
-        cv::threshold(correlationMap, thresholdMap, threshold, 1.0, cv::THRESH_TOZERO);
-
-        std::vector<cv::Point> tmpLocations;
-        cv::findNonZero(thresholdMap, tmpLocations);
-
-        matchLocations.insert(matchLocations.end(), tmpLocations.begin(), tmpLocations.end());
-        matchLocations = filterPoints(matchLocations, 30);
-
-        for (const auto & loc : matchLocations) {
-            cv::Rect boundingBox(loc.x, loc.y, m_red_fire.cols, m_red_fire.rows);
-            cv::rectangle(m_mat, boundingBox, cv::Scalar(0, 255, 0), 2);
-        }
-    }
-    {
-        cv::Mat correlationMap;
-        int matchMethod = CV_TM_CCOEFF_NORMED; // You can choose a different matching method if needed
-        cv::matchTemplate(m_mat, m_red_shiny, correlationMap, matchMethod);
-
-        double threshold = static_cast<double>(m_threshold / 100.0);
-        cv::Mat thresholdMap;
-        cv::threshold(correlationMap, thresholdMap, threshold, 1.0, cv::THRESH_TOZERO);
-
-        std::vector<cv::Point> tmpLocations;
-        cv::findNonZero(thresholdMap, tmpLocations);
-
-        matchLocations.insert(matchLocations.end(), tmpLocations.begin(), tmpLocations.end());
-        matchLocations = filterPoints(matchLocations, 30);
-
-        for (const auto & loc : matchLocations) {
-            cv::Rect boundingBox(loc.x, loc.y, m_red_shiny.cols, m_red_shiny.rows);
-            cv::rectangle(m_mat, boundingBox, cv::Scalar(0, 255, 0), 2);
-        }
-    }
-
     cv::imshow("game", m_mat);
     cv::waitKey(1);
 }

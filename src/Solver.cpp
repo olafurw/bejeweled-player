@@ -2,6 +2,9 @@
 
 #include "Window.hpp"
 
+#include <opencv2/imgproc.hpp>
+#include <iostream>
+
 using board_t = std::array<std::array<char, 8>, 8>;
 
 bool point_inside(const cv::Point2i & point) {
@@ -97,27 +100,88 @@ bool match(const int i, const int j, const Pattern & pattern, const board_t & bo
     return true;
 }
 
-std::optional<Solution> solve(const Patterns& patterns, const cv::Mat & screen) {
+cv::Scalar scalarBGR2HSV(uchar B, uchar G, uchar R) {
+    cv::Mat rgb;
+    cv::Mat hsv(1, 1, CV_8UC3, cv::Scalar(B, G, R));
+    cv::cvtColor(hsv, rgb, CV_BGR2HSV);
+    return cv::Scalar(rgb.data[0], rgb.data[1], rgb.data[2]);
+}
+
+std::optional<Solution> solve(const Patterns & patterns, cv::Mat & screen) {
     const board_t board = screen_to_board(screen);
+
+    // visualization
+    std::array<std::array<cv::Scalar, 8>, 8> colors;
+    std::array<std::array<cv::Scalar, 8>, 8> hsvColors;
 
     std::vector<Solution> solutions;
 
-    for (int i = 0; i < 8; ++i) {
-        for (int j = 0; j < 8; ++j) {
-            const char gem = board[i][j];
+    {
+        const int startX = GAME_RIGHT_PADDING;
+        int y = GAME_TOP_PADDING;
 
-            for (const Pattern & pattern : patterns.m_patterns) {
-                if (!match(i, j, pattern, board)) {
-                    continue;
+        for (int i = 0; i < 8; ++i) {
+            int x = startX;
+
+            for (int j = 0; j < 8; ++j) {
+                const char gem = board[i][j];
+
+                const cv::Point rectStart = cv::Point(x, y);
+                const cv::Point rectEnd = cv::Point(x + GAME_TILE_SIZE, y + GAME_TILE_SIZE);
+
+                cv::Mat gemMat;
+                screen(cv::Rect(
+                    rectStart.x + CENTER_GAME_TILE_OFFSET,
+                    rectStart.y + CENTER_GAME_TILE_OFFSET,
+                    CENTER_GAME_TILE_SIZE,
+                    CENTER_GAME_TILE_SIZE)
+                ).copyTo(gemMat);
+
+                colors[i][j] = cv::mean(gemMat);
+                hsvColors[i][j] = scalarBGR2HSV(colors[i][j][0], colors[i][j][1], colors[i][j][2]);
+                //std::cout << s[0] << ' ' << s[1] << ' ' << s[2] << std::endl;
+                //std::cout << s2[0] << ' ' << s2[1] << ' ' << s2[2] << std::endl;
+
+                x += GAME_TILE_SIZE;
+            }
+            y += GAME_TILE_SIZE;
+        }
+    }
+
+    {
+        const int startX = GAME_RIGHT_PADDING;
+        int y = GAME_TOP_PADDING;
+
+        for (int i = 0; i < 8; ++i) {
+            int x = startX;
+
+            for (int j = 0; j < 8; ++j) {
+                const char gem = board[i][j];
+
+                const cv::Point rectStart = cv::Point(x, y);
+                const cv::Point rectEnd = cv::Point(x + GAME_TILE_SIZE, y + GAME_TILE_SIZE);
+
+                if (hsvColors[i][j][0] > 0.0) {
+                    rectangle(screen, rectStart, rectEnd, colors[i][j], -1);
                 }
 
-                const auto & C_point = pattern.points.back();
+                x += GAME_TILE_SIZE;
 
-                solutions.emplace_back(Solution{
-                  { C_point.first + j, C_point.second + i },
-                  pattern.solution_dir,
-                  pattern.value });
+                for (const Pattern & pattern : patterns.m_patterns) {
+                    if (!match(i, j, pattern, board)) {
+                        continue;
+                    }
+
+                    const auto & C_point = pattern.points.back();
+
+                    solutions.emplace_back(Solution{
+                      { C_point.first + j, C_point.second + i },
+                      pattern.solution_dir,
+                      pattern.value });
+                }
             }
+
+            y += GAME_TILE_SIZE;
         }
     }
 

@@ -11,4 +11,4 @@ struct Solution {
     int value;
 };
 
-std::optional<Solution> solve(const Patterns & patterns, const cv::Mat & screen);
+std::optional<Solution> solve(const Patterns & patterns, cv::Mat & screen);

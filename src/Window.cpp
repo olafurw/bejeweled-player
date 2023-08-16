@@ -58,11 +58,11 @@ void Window::start() {
         return;
     }
     
-    //for (int i = 0; i < 100; ++i) {
-    while (true) {
+    for (int i = 0; i < 100; ++i) {
+    //while (true) {
         update();
         draw();
-        Sleep(1);
+        Sleep(300);
     }
 }
 
@@ -77,7 +77,7 @@ void Window::update() {
     const Solution & solution = solutionOpt.value();
     const int x = WINDOW_RIGHT_PADDING + (solution.C_point.first * GAME_TILE_SIZE) + GAME_TILE_PADDING;
     const int y = WINDOW_TOP_PADDING + (solution.C_point.second * GAME_TILE_SIZE) + GAME_TILE_PADDING;
-    //mouse_click_drag(m_window, x, y, solution.direction.first * GAME_TILE_SIZE, solution.direction.second * GAME_TILE_SIZE);
+    mouse_click_drag(m_window, x, y, solution.direction.first * GAME_TILE_SIZE, solution.direction.second * GAME_TILE_SIZE);
 }
 
 void Window::draw() {

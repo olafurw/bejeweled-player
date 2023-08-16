@@ -1,0 +1,91 @@
+Blue
+h: 105 107
+s: 236 242
+v: 181 206
+Blue fire
+h: 104 108
+s: 166 207
+v: 195 235
+Blue shiny
+h: 97 101
+s: 138 170
+v: 243 254
+
+Orange
+h: 8 15
+s: 189 242
+v: 188 241
+Orange fire
+h: 8 15
+s: 184 243
+v: 189 243
+Orange shiny
+h: 2 13
+s: 104 138
+v: 230 254
+
+Red
+h: 175 177
+s: 215 245
+v: 174 247
+Red fire
+h: 175 179
+s: 192 243
+v: 175 250
+Red shiny
+h: 166 172
+s: 111 152
+v: 229 254
+
+Green
+h: 62 67
+s: 192 251
+v: 139 214
+Green fire
+h: 60 66
+s: 178 251
+v: 139 218
+Green shiny
+h: 70 74
+s: 151 177
+v: 191 236
+
+White
+h: 0 30
+s: 0 1
+v: 211 221
+White fire
+h: 0 30
+s: 0 6
+v: 211 226
+White shiny
+h: 99 104
+s: 14 25
+v: 231 244
+
+Yellow
+h: 22 27
+s: 200 226
+v: 139 235
+Yellow fire
+h: 21 27
+s: 149 221
+v: 216 253
+
+Purple
+h: 146 149
+s: 86 233
+v: 139 191
+Purple fire
+h: 152 168
+s: 48 181
+v: 190 238
+Purple shiny
+h: 121 144
+s: 36 121
+v: 239 253
+
+Magic ball
+h: 2 179
+s: 7 107
+v: 136 192

@@ -6,11 +6,9 @@ std::pair<int, int> get_mouse_position(HWND window, const int x, const int y) {
     RECT rect;
     GetWindowRect(window, &rect);
 
-    POINT cursor;
-    GetCursorPos(&cursor);
-
     // If MOUSEEVENTF_ABSOLUTE value is specified, 
     // dx and dy contain normalized absolute coordinates between 0 and 65,535
+    // ScreenToClient and ClientToScreen don't seem to work.
     const float screenX = 65535.0f / GetSystemMetrics(SM_CXSCREEN);
     const float screenY = 65535.0f / GetSystemMetrics(SM_CYSCREEN);
 
